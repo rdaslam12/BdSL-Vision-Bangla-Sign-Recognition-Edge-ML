@@ -6,6 +6,27 @@ End-to-end computer vision pipeline for Bangla Sign Language recognition: datase
 
 [Live demo](https://banglahandsignrecognition.netlify.app) · [Training notebook](notebooks/bdsl_vision_training.ipynb) · [Validation results](results/metrics.md) · [Per-class metrics](results/per_class_metrics.md)
 
+## Demo
+
+### Browser inference
+
+[**Open the live demo →**](https://banglahandsignrecognition.netlify.app)
+
+Real ONNX inference runs locally in the browser with image upload and camera input, Bengali labels, confidence, inference latency, and runtime/device reporting.
+
+![Browser deployment with local ONNX inference](assets/browser-demo.png)
+
+### Android edge deployment
+
+The TensorFlow Lite Android prototype was used as an on-device deployment testbed.
+
+<table>
+  <tr>
+    <td align="center"><img src="assets/android-good.JPEG" width="320" alt="Android detection of the Bangla sign for good"><br><code>ভালো</code></td>
+    <td align="center"><img src="assets/android-headache.JPEG" width="320" alt="Android detection of the Bangla sign for headache"><br><code>মাথাব্যথা</code></td>
+  </tr>
+</table>
+
 ## Key numbers
 
 | Item | Value |
@@ -96,20 +117,7 @@ models/best.pt
 
 The final PyTorch checkpoint, TensorFlow Lite FP16 model, and browser ONNX model are included in the repository.
 
-The Android interface served as deployment validation rather than the primary contribution.
-
-<table>
-  <tr>
-    <td align="center"><img src="assets/android-good.JPEG" width="320" alt="Android detection of the Bangla sign for good"><br><code>ভালো</code></td>
-    <td align="center"><img src="assets/android-headache.JPEG" width="320" alt="Android detection of the Bangla sign for headache"><br><code>মাথাব্যথা</code></td>
-  </tr>
-</table>
-
-## Browser deployment
-
-The [live browser demo](https://banglahandsignrecognition.netlify.app) loads `demo/public/models/bdsl-yolov8s.onnx` and performs inference locally in the browser with no backend. It supports image upload and camera input, reports Bengali labels, confidence, inference latency, and the selected runtime/device, and includes a research-prototype disclaimer.
-
-![Browser deployment with local ONNX inference](assets/browser-demo.png)
+The Android interface served as deployment validation rather than the primary contribution. The [live browser demo](https://banglahandsignrecognition.netlify.app) performs real inference locally with no backend.
 
 ```bash
 npm --prefix demo install
