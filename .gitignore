@@ -7,9 +7,14 @@ __pycache__/
 venv/
 .env
 
-# Large model artifacts
+node_modules/
+dist/
+
+# Model artifacts are ignored by default; final release artifacts are allowed below.
 *.pt
 *.tflite
+!models/best.pt
+!models/best_float16.tflite
 
 # Local experiment outputs
 runs/
