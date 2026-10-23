@@ -5,7 +5,7 @@ Final artifacts from the BdSL Vision pipeline.
 | Artifact | Format | Purpose | Included |
 |---|---|---|---|
 | `best.pt` | PyTorch | Best YOLOv8s training checkpoint | Yes |
-| `best_float16.tflite` | TensorFlow Lite FP16 | Android / edge deployment | No — copy manually |
+| `best_float16.tflite` | TensorFlow Lite FP16 | Android / edge deployment | Yes |
 | `../demo/public/models/bdsl-yolov8s.onnx` | ONNX FP16 | Browser inference | Yes |
 
 Model:
