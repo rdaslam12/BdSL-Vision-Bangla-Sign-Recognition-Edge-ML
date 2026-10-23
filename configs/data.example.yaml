@@ -1,0 +1,24 @@
+# Copy this file and adjust `path` to the prepared dataset directory.
+path: ../data/processed
+train: images/train
+val: images/val
+
+names:
+  0: "অপেক্ষা করো"
+  1: "আজ"
+  2: "আমার"
+  3: "আমি"
+  4: "এখন"
+  5: "কখন"
+  6: "কাজ"
+  7: "কে"
+  8: "ক্লান্ত"
+  9: "ক্ষুধার্ত"
+  10: "খারাপ"
+  11: "চুপ করো"
+  12: "তুমি"
+  13: "তোমার"
+  14: "দুঃখিত"
+  15: "ভালো"
+  16: "মাথাব্যথা"
+  17: "সাহায্য"
