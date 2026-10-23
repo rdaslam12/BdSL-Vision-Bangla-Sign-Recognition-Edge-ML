@@ -4,7 +4,7 @@ End-to-end computer vision pipeline for Bangla Sign Language recognition: datase
 
 **4,139 annotated samples · 18 classes · YOLOv8s · mAP@0.50 0.639**
 
-[Training notebook](notebooks/bdsl_vision_training.ipynb) · [Validation results](results/metrics.md) · [Per-class metrics](results/per_class_metrics.md) · Live demo: deployment pending
+[Live demo](https://banglahandsignrecognition.netlify.app) · [Training notebook](notebooks/bdsl_vision_training.ipynb) · [Validation results](results/metrics.md) · [Per-class metrics](results/per_class_metrics.md)
 
 ## Key numbers
 
@@ -94,7 +94,7 @@ models/best.pt
 └── ONNX FP16            → local browser inference
 ```
 
-The PyTorch checkpoint and browser ONNX model are included. The final `models/best_float16.tflite` file is not currently available in this working copy and must be copied in manually; it has not been regenerated.
+The final PyTorch checkpoint, TensorFlow Lite FP16 model, and browser ONNX model are included in the repository.
 
 The Android interface served as deployment validation rather than the primary contribution.
 
@@ -107,7 +107,9 @@ The Android interface served as deployment validation rather than the primary co
 
 ## Browser deployment
 
-The [browser demo](demo/) loads `demo/public/models/bdsl-yolov8s.onnx` and performs real inference locally, with no backend. It supports image upload and camera input, reports Bengali labels, confidence, inference latency, and the selected runtime/device, and includes a research-prototype disclaimer.
+The [live browser demo](https://banglahandsignrecognition.netlify.app) loads `demo/public/models/bdsl-yolov8s.onnx` and performs inference locally in the browser with no backend. It supports image upload and camera input, reports Bengali labels, confidence, inference latency, and the selected runtime/device, and includes a research-prototype disclaimer.
+
+![Browser deployment with local ONNX inference](assets/browser-demo.png)
 
 ```bash
 npm --prefix demo install
@@ -118,13 +120,14 @@ npm --prefix demo run build
 
 ```text
 .
-├── assets/                  # Android deployment screenshots
+├── assets/                  # Android and browser deployment screenshots
 ├── configs/data.example.yaml
 ├── demo/                    # React/Vite local ONNX inference demo
 │   └── public/models/bdsl-yolov8s.onnx
 ├── models/
 │   ├── README.md
-│   └── best.pt
+│   ├── best.pt
+│   └── best_float16.tflite
 ├── notebooks/bdsl_vision_training.ipynb
 ├── results/
 │   ├── metrics.md
@@ -140,8 +143,6 @@ npm --prefix demo run build
 ├── netlify.toml
 └── requirements.txt
 ```
-
-`models/best_float16.tflite` should sit beside `best.pt` once the validated artifact is supplied.
 
 ## Reproduction
 
