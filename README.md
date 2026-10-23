@@ -1,137 +1,208 @@
 # BdSL Vision — Bangla Sign Recognition & Edge ML
 
-An end-to-end computer vision pipeline for recognizing **18 Bangla Sign Language (BdSL) word classes**. The project covers dataset preparation, annotation validation and repair, YOLOv8s fine-tuning, class-level evaluation, TensorFlow Lite export, and on-device Android inference.
+End-to-end computer vision pipeline for Bangla Sign Language recognition: dataset engineering, annotation validation, YOLOv8s fine-tuning, evaluation, and multi-runtime edge deployment.
 
-**4,139 annotated samples · 18 classes · YOLOv8s · mAP@0.50 0.639 · TFLite edge deployment**
+**4,139 annotated samples · 18 classes · YOLOv8s · mAP@0.50 0.639**
 
-## What this project covers
+[Training notebook](notebooks/bdsl_vision_training.ipynb) · [Validation results](results/metrics.md) · [Per-class metrics](results/per_class_metrics.md) · Live demo: deployment pending
 
-| Area | Work |
-|---|---|
-| **Dataset engineering** | Image-label pairing, YOLO annotation preparation, integrity checks, and invalid bounding-box repair |
-| **Model engineering** | YOLOv8s transfer learning on 18 BdSL classes with a reproducible 80/20 split |
-| **Evaluation** | Precision, recall, mAP, training curves, and per-class analysis |
-| **Edge deployment** | PyTorch checkpoint exported to TensorFlow Lite and validated in an Android camera pipeline |
+## Key numbers
 
-## Pipeline
+| Item | Value |
+|---|---:|
+| Annotated image-label pairs | 4,139 |
+| Train / validation split | 3,311 / 828 |
+| Classes | 18 |
+| Input resolution | 416 × 416 |
+| Training epochs | 50 |
 
-```mermaid
-flowchart LR
-    A[Raw BdSL images] --> B[18-class curation]
-    B --> C[YOLO annotations]
-    C --> D[Validation & repair]
-    D --> E[80/20 train-validation split]
-    E --> F[YOLOv8s fine-tuning]
-    F --> G[Evaluation]
-    G --> H[best.pt]
-    H --> I[TFLite FP16 export]
-    I --> J[Android edge inference]
+## Project scope
+
+This repository covers four connected parts of an applied edge-ML workflow:
+
+- **Dataset engineering:** class selection, image-label pairing, YOLO annotation checks, repair, and deterministic splitting.
+- **Model engineering:** transfer learning from a YOLOv8s checkpoint with a documented training entry point.
+- **Evaluation:** aggregate and per-class metrics plus recovered training curves.
+- **Edge deployment:** export and integration for Android with TensorFlow Lite and for browsers with ONNX.
+
+It is a detector for a constrained 18-sign vocabulary, not a complete Bangla Sign Language translator.
+
+## Architecture
+
+```text
+Raw BdSL images + YOLO labels
+              │
+              ▼
+ Pairing → validation/repair → deterministic 80/20 split
+              │
+              ▼
+       YOLOv8s fine-tuning → evaluation → best.pt
+                                            ├── TFLite FP16 → Android
+                                            └── ONNX FP16   → Browser
 ```
 
 ## Dataset engineering
 
-The source BdSL images were prepared for an object-detection workflow rather than used as a ready-made training set. The pipeline pairs images with YOLO labels, verifies image/annotation correspondence, and constrains invalid normalized bounding-box values before training.
+The source BdSL data required preparation for object detection. The workflow selected 18 classes, matched images and labels by filename stem, checked YOLO rows and class IDs, clamped invalid normalized bounding-box values when explicitly requested, and produced a seed-42 image-level train/validation split. The resulting experiment used 3,311 training pairs and 828 validation pairs.
 
-- **Annotated image-label pairs:** 4,139
-- **Training split:** 3,311
-- **Validation split:** 828
-- **Target classes:** 18 — see [`classes.txt`](classes.txt)
-- **Split seed:** 42
+The complete external dataset is not distributed here. Use and redistribution must follow the original dataset's terms.
 
 ## Model training
 
 | Configuration | Value |
 |---|---|
-| Model | YOLOv8s |
+| Initial checkpoint | `yolov8s.pt` |
 | Epochs | 50 |
 | Input size | 416 × 416 |
 | Batch size | 32 |
 | Optimizer | AdamW |
 | Initial learning rate | 0.01 |
 | Early-stopping patience | 10 |
+| Workers | 2 |
+| Seed | 42 |
 
-The preserved training workflow is available in [`notebooks/bdsl_vision_training.ipynb`](notebooks/bdsl_vision_training.ipynb).
+The historical Colab experiment, including its original outputs, remains preserved in [the training notebook](notebooks/bdsl_vision_training.ipynb). Although that experiment used a misleading legacy run-directory name, its code initialized and trained YOLOv8s; new scripts use the unambiguous name `bdsl_yolov8s`. The workflow pins the notebook's recorded Ultralytics version for export compatibility.
 
 ## Results
 
-The best checkpoint was evaluated on the **828-image validation split**.
+Evaluation used the 828-image validation split.
 
 | Metric | Score |
 |---|---:|
-| Precision | **0.734** |
-| Recall | **0.729** |
-| mAP@0.50 | **0.639** |
-| mAP@0.50:0.95 | **0.208** |
+| Precision | 0.734 |
+| Recall | 0.729 |
+| mAP@0.50 | 0.639 |
+| mAP@0.50:0.95 | 0.208 |
 
-### Training progress
-
-![Validation mAP](results/training/map_progress.png)
+![Validation mAP over training](results/training/map_progress.png)
 
 ![Training losses](results/training/training_losses.png)
 
-### Per-class performance
+## Per-class performance
 
-![Per-class mAP50](results/per_class_map50.png)
+Performance varies materially across the 18 classes; aggregate metrics should not be read as uniform class performance.
 
-Performance varies substantially across the 18 signs. `অপেক্ষা করো`, `ভালো`, and `মাথাব্যথা` are among the stronger classes, while `ক্ষুধার্ত` and `দুঃখিত` remain more challenging.
+![Per-class mAP at IoU 0.50](results/per_class_map50.png)
 
-See the full breakdown in [`results/per_class_metrics.md`](results/per_class_metrics.md).
+See [the complete per-class table](results/per_class_metrics.md).
 
 ## Edge deployment
 
-The selected PyTorch checkpoint was exported to TensorFlow Lite for local inference. This allowed the detector to be tested outside the notebook in an Android camera pipeline without requiring cloud inference.
+```text
+models/best.pt
+├── TensorFlow Lite FP16 → Android deployment testbed
+└── ONNX FP16            → local browser inference
+```
+
+The PyTorch checkpoint and browser ONNX model are included. The final `models/best_float16.tflite` file is not currently available in this working copy and must be copied in manually; it has not been regenerated.
+
+The Android interface served as deployment validation rather than the primary contribution.
 
 <table>
   <tr>
-    <td align="center"><img src="assets/android-good.JPEG" width="320"/><br/><code>ভালো</code> → আমি ভালো আছি।</td>
-    <td align="center"><img src="assets/android-headache.JPEG" width="320"/><br/><code>মাথাব্যথা</code> → আমার মাথাব্যথা হচ্ছে।</td>
+    <td align="center"><img src="assets/android-good.JPEG" width="320" alt="Android detection of the Bangla sign for good"><br><code>ভালো</code></td>
+    <td align="center"><img src="assets/android-headache.JPEG" width="320" alt="Android detection of the Bangla sign for headache"><br><code>মাথাব্যথা</code></td>
   </tr>
 </table>
 
-The Android application is used here as a **deployment testbed**; the primary focus of this repository is the dataset, model, evaluation, and edge-ML pipeline.
+## Browser deployment
 
-## Model artifacts
+The [browser demo](demo/) loads `demo/public/models/bdsl-yolov8s.onnx` and performs real inference locally, with no backend. It supports image upload and camera input, reports Bengali labels, confidence, inference latency, and the selected runtime/device, and includes a research-prototype disclaimer.
 
-The main trained artifacts are kept separate from normal Git history:
-
-- `best.pt` — trained YOLOv8s checkpoint
-- `best_float16.tflite` — FP16 TensorFlow Lite export
-- `best_float32.tflite` — FP32 TensorFlow Lite export
-
-See [`models/README.md`](models/README.md).
+```bash
+npm --prefix demo install
+npm --prefix demo run build
+```
 
 ## Repository structure
 
 ```text
 .
-├── assets/                 # Android deployment screenshots
-├── models/                 # Model artifact documentation
-├── notebooks/              # Preserved training workflow
+├── assets/                  # Android deployment screenshots
+├── configs/data.example.yaml
+├── demo/                    # React/Vite local ONNX inference demo
+│   └── public/models/bdsl-yolov8s.onnx
+├── models/
+│   ├── README.md
+│   └── best.pt
+├── notebooks/bdsl_vision_training.ipynb
 ├── results/
-│   ├── training/           # Recovered training curves
 │   ├── metrics.md
 │   ├── per_class_metrics.md
-│   └── per_class_map50.png
+│   ├── per_class_map50.png
+│   └── training/
+├── src/
+│   ├── export_model.py
+│   ├── prepare_dataset.py
+│   ├── train.py
+│   └── validate_annotations.py
 ├── classes.txt
-├── requirements.txt
-└── README.md
+├── netlify.toml
+└── requirements.txt
+```
+
+`models/best_float16.tflite` should sit beside `best.pt` once the validated artifact is supplied.
+
+## Reproduction
+
+Install the Python workflow dependencies:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+Validate and prepare data without notebook-specific paths:
+
+```bash
+python src/validate_annotations.py \
+  --images data/raw/images \
+  --labels data/raw/labels \
+  --classes classes.txt
+
+python src/prepare_dataset.py \
+  --images data/raw/images \
+  --labels data/raw/labels \
+  --output data/processed \
+  --train-ratio 0.8 \
+  --seed 42
+```
+
+Copy `configs/data.example.yaml`, adjust its dataset path, and explicitly start training only when desired:
+
+```bash
+python src/train.py --data configs/data.yaml --project runs/train --name bdsl_yolov8s
+```
+
+Exports also run only when explicitly requested:
+
+```bash
+python src/export_model.py models/best.pt --format tflite
+python src/export_model.py models/best.pt --format onnx
 ```
 
 ## Limitations
 
-- The detector covers **18 predefined signs**, not the full BdSL vocabulary.
-- Current evaluation uses an **image-level 80/20 split** rather than a signer-independent held-out test set.
-- Performance differs significantly between classes.
-- The current detector operates on frame-level visual signs; continuous sign-language understanding would require temporal modeling.
-- Phrase generation in the mobile prototype is rule-based rather than learned language translation.
+- Only 18 predefined signs are supported; this is not a complete BdSL translation system.
+- Current evaluation uses an image-level 80/20 split. Signer-independent test evaluation remains future work.
+- Per-class performance varies significantly.
+- Frame-level detection does not solve continuous sign-language translation.
+- Phrase generation in the Android prototype was rule-based.
 
-## Next steps
+## Future work
 
-- Add signer-independent evaluation and broader test data.
-- Benchmark FP32 vs FP16 model size and device latency.
-- Extend the vocabulary and investigate temporal/continuous sign recognition.
-- Add a lightweight browser demo for testing the trained model.
+- Add signer-independent evaluation and a held-out test set.
+- Expand the vocabulary and collect more balanced data.
+- Evaluate temporal models for continuous signing.
+- Benchmark PyTorch, TensorFlow Lite FP16, and ONNX across representative edge devices.
 
-## Demo
+## Attribution and data
 
-A small browser-based inference demo is planned. It will be presented as a way to **test the trained model**, not as the main contribution of the project.
+The Android shell was adapted from an existing open-source YOLO Android implementation. This repository's contribution is dataset engineering, model development and evaluation, model export, and integration. **TODO:** add the exact upstream Android repository URL and license after they are verified.
+
+The dataset is not claimed as original work and is not bundled. Add the verified dataset citation and license before redistributing source data.
+
+## License
+
+No repository-wide license is currently declared because compatibility with the upstream dataset and Android sources has not yet been verified. Model and data redistribution must follow the applicable original licenses.
