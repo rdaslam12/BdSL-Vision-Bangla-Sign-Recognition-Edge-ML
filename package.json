@@ -1,0 +1,12 @@
+{
+  "name": "bdsl-vision",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "start": "node scripts/start.mjs"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

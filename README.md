@@ -6,6 +6,19 @@ End-to-end computer vision pipeline for Bangla Sign Language recognition: datase
 
 [Live demo](https://banglahandsignrecognition.netlify.app) · [Training notebook](notebooks/bdsl_vision_training.ipynb) · [Validation results](results/metrics.md) · [Per-class metrics](results/per_class_metrics.md)
 
+## Local quick start
+
+To run the browser application locally, install Node.js `20.19+` on the Node 20 line or Node.js `22.12+`, then run these commands from the repository root:
+
+```bash
+npm run setup
+npm start
+```
+
+Setup installs the demo dependencies from its lockfile, verifies the included ONNX model, and builds the application. Start serves that existing build on `127.0.0.1` and opens its local URL in your default browser; press `Ctrl+C` in the terminal to stop it.
+
+This browser workflow does not require Python, a dataset, model training, API keys, CUDA, or VS Code. The optional Python environment and training workflow are documented separately under [Reproduction](#reproduction).
+
 ## Demo
 
 ### Browser inference
