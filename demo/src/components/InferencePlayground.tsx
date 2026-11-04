@@ -426,7 +426,7 @@ export function InferencePlayground() {
   return (
     <>
       <section id="demo" className="playground-section" aria-labelledby="playground-title">
-        <div className="section-heading"><h2 id="playground-title">A little gesture.<br />A live prediction.</h2><p>Put the model to the test. Upload an image or open your camera. Every prediction runs on your device.</p></div>
+        <h2 id="playground-title" className="visually-hidden">Live model workspace</h2>
         <section className="workspace" aria-label="BdSL inference workspace">
           <div className="workspace-controls">
             <div className="mode-switch" aria-label="Input mode">

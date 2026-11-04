@@ -11,16 +11,14 @@ export function SignReference({ sample }: { sample: SignSample }) {
   </div>;
 }
 
-export function SignGallery({ onSelect }: { onSelect: (sample: SignSample) => void }) {
-  const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? SIGN_SAMPLES : SIGN_SAMPLES.slice(0, 6);
+export function SignGallery({ onSelect }: { onSelect?: (sample: SignSample) => void }) {
   return <section id="explore" className="gallery-section" aria-labelledby="gallery-title">
-    <div className="section-heading"><h2 id="gallery-title">Small vocabulary.<br />Meaningful expressions.</h2><p>Explore 18 supported classes through AI-generated concept illustrations. These are not verified BdSL instructional references, and their poses may not match the model’s trained gestures.</p></div>
-    <div id="sign-gallery-grid" className="sign-grid">{visible.map((sample) => <article className="sign-item" key={sample.id}>
+    <div className="section-heading"><h2 id="gallery-title">{onSelect ? "Choose a sign to practice." : "18 signs. One browser-based model."}</h2><p>{onSelect ? "Select a class to open guided camera practice." : "A compact view of the classes included in this prototype."}</p></div>
+    <div className="sign-grid">{SIGN_SAMPLES.map((sample) => <article className="sign-item" key={sample.id}>
       <div className="sign-image"><SignReference sample={sample} /></div>
-      <div className="sign-caption"><div><h3 lang="bn">{sample.label}</h3><p>{sample.english}</p></div><button type="button" onClick={() => onSelect(sample)} aria-label={`Practice ${sample.english} with camera`}>Practice sign</button></div>
+      <div className="sign-caption"><h3 lang="bn">{sample.label}</h3><p>{sample.english}</p></div>
+      {onSelect && <button className="practice-sign" type="button" onClick={() => onSelect(sample)} aria-label={`Practice ${sample.english} with camera`}>Practice sign</button>}
     </article>)}</div>
-    <button className="gallery-expand file-control" type="button" aria-expanded={expanded} aria-controls="sign-gallery-grid" onClick={() => setExpanded(!expanded)}>{expanded ? "Show featured signs" : "Explore all 18 signs"}</button>
-    <p className="section-note">Choose a sign for guided camera practice. Illustrations are visual context only; recognition uses your live camera and the actual model.</p>
+    <p className="section-note">Illustrations are visual class references for the demo, not verified BdSL instructional material. They are not used for inference or training.</p>
   </section>;
 }
