@@ -1,0 +1,128 @@
+[
+  {
+    "id": "wait",
+    "labelBn": "অপেক্ষা করো",
+    "labelEn": "Wait",
+    "illustration": "/signs/wait.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "today",
+    "labelBn": "আজ",
+    "labelEn": "Today",
+    "illustration": "/signs/today.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "my",
+    "labelBn": "আমার",
+    "labelEn": "My",
+    "illustration": "/signs/my.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "i-me",
+    "labelBn": "আমি",
+    "labelEn": "I / Me",
+    "illustration": "/signs/i-me.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "now",
+    "labelBn": "এখন",
+    "labelEn": "Now",
+    "illustration": "/signs/now.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "when",
+    "labelBn": "কখন",
+    "labelEn": "When",
+    "illustration": "/signs/when.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "work",
+    "labelBn": "কাজ",
+    "labelEn": "Work",
+    "illustration": "/signs/work.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "who",
+    "labelBn": "কে",
+    "labelEn": "Who",
+    "illustration": "/signs/who.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "tired",
+    "labelBn": "ক্লান্ত",
+    "labelEn": "Tired",
+    "illustration": "/signs/tired.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "hungry",
+    "labelBn": "ক্ষুধার্ত",
+    "labelEn": "Hungry",
+    "illustration": "/signs/hungry.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "bad",
+    "labelBn": "খারাপ",
+    "labelEn": "Bad",
+    "illustration": "/signs/bad.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "shut-up",
+    "labelBn": "চুপ করো",
+    "labelEn": "Shut up",
+    "illustration": "/signs/shut-up.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "you",
+    "labelBn": "তুমি",
+    "labelEn": "You",
+    "illustration": "/signs/you.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "your",
+    "labelBn": "তোমার",
+    "labelEn": "Your",
+    "illustration": "/signs/your.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "sorry",
+    "labelBn": "দুঃখিত",
+    "labelEn": "Sorry",
+    "illustration": "/signs/sorry.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "good",
+    "labelBn": "ভালো",
+    "labelEn": "Good",
+    "illustration": "/signs/good.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "headache",
+    "labelBn": "মাথাব্যথা",
+    "labelEn": "Headache",
+    "illustration": "/signs/headache.webp",
+    "verifiedBdslGesture": false
+  },
+  {
+    "id": "help",
+    "labelBn": "সাহায্য",
+    "labelEn": "Help",
+    "illustration": "/signs/help.webp",
+    "verifiedBdslGesture": false
+  }
+]
