@@ -29,6 +29,13 @@ Real ONNX inference runs locally in the browser with image upload and camera inp
 
 ![Browser deployment with local ONNX inference](assets/browser-demo.png)
 
+The showcase includes a vocabulary gallery and guided camera practice. Practice requires three consecutive top-label matches at confidence ≥65%; a mismatch, empty detection, low confidence, target change, or camera stop resets progress. This is model feedback, not a signing-fluency assessment.
+
+Clean reference photographs are not bundled. The six gallery entries intentionally show unavailable states. See [`demo/public/signs/README.md`](demo/public/signs/README.md) for the verified-asset workflow and [`demo/src/data/signs.ts`](demo/src/data/signs.ts) for the typed manifest. Expected sample labels remain separate from real model detections. The hero uses a labeled archived project screenshot, not a live prediction.
+
+Validate with `cd demo && npm run build`. On Node 22.6+ run practice regression tests with `node --experimental-strip-types --test tests/practice.test.mjs` from `demo/`.
+
+
 ### Android edge deployment
 
 The TensorFlow Lite Android prototype was used as an on-device deployment testbed.
