@@ -74,7 +74,10 @@ export function ResultsPanel({
         </div>
 
         {hasResult && safeDetections.length === 0 ? (
-          <p className="empty-result">No supported sign detected.</p>
+          <p className="empty-result">
+            No supported sign detected. Try brighter, even lighting and keep one hand fully
+            inside the frame.
+          </p>
         ) : safeDetections.length > 0 ? (
           <ol className="detection-list">
             {safeDetections.map((detection, index) => (

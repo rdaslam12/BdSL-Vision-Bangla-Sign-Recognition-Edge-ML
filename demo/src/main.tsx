@@ -4,6 +4,7 @@ import "@fontsource-variable/archivo/wght.css";
 import App from "./App";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import "./styles.css";
+import "./showcase.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
